@@ -1,16 +1,48 @@
-# audio_recorder_project
+# Audio Recorder Project
 
-A new Flutter project.
+Este é um projeto Flutter que permite gravar e reproduzir áudios.
 
-## Getting Started
+## Funcionalidades
 
-This project is a starting point for a Flutter application.
+- Gravação de áudio em tempo real.
+- Reprodução dos áudios gravados.
+- Interface de usuário intuitiva e amigável.
+- Suporte a diferentes formatos de áudio.
 
-A few resources to get you started if this is your first Flutter project:
+## Pré-requisitos
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Certifique-se de ter o Flutter SDK instalado em sua máquina. Para obter mais informações sobre como instalar o Flutter, consulte a documentação oficial: [Flutter - Instalação](https://flutter.dev/docs/get-started/install)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Instalação
+
+Siga estas etapas para instalar o projeto em sua máquina:
+
+1. Clone o repositório para sua máquina local:
+git clone https://github.com/seu_usuario/audio_recorder_project.git
+
+2. Navegue até o diretório do projeto:
+
+
+3. Execute o comando `flutter pub get` para instalar as dependências do projeto.
+
+## Uso
+
+Após concluir a instalação, siga estas etapas para executar o aplicativo:
+
+1. Conecte um dispositivo ou inicie um emulador Android/iOS.
+
+2. Execute o seguinte comando para instalar e iniciar o aplicativo:
+
+flutter run
+
+
+## Contribuição
+
+Contribuições são bem-vindas! Se você tiver sugestões, melhorias ou correções de bugs, fique à vontade para abrir uma "issue" ou enviar um "pull request".
+
+
+## Contato
+
+Se você tiver alguma dúvida ou sugestão relacionada a este projeto, entre em contato com (Franck :franckkumako@gmail.com).
+
+
