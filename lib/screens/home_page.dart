@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart' as ap;
 import 'package:audio_recorder_project/audio_player.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,36 +18,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool showPlayer = false;
   ap.AudioSource? audioSource;
-  // final serviceManager = ServicesManager();
-  // late final user = User();
-  // late User user;
-  // late final User user;
+
   late bool recordPermission;
   @override
   void initState() {
     super.initState();
 
-    //  / serviceManager.determinePosition();
-    // user = User(); //
-    // checkRecordPermission().then((result) => {
-    //       setState(() {
-    //         recordPermission = result;
-    //       })
-    //     });
-
     showPlayer = false;
-  }
-
-  Future<bool> checkRecordPermission() async {
-    // user.position = await serviceManager.determinePosition();
-    // print('user.position ${user.position}');
-    final userId = 'israel';
-    final latitude = 53.273;
-    final longitude = -7.778;
-
-    // final response = await serviceManager.ping(userId, latitude, longitude);
-
-    return true;
   }
 
   @override

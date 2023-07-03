@@ -1,7 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 
 class User {
-  final String? id;
+  final String? userId;
   final String? name;
   final String? email;
   final String? password;
@@ -9,7 +9,7 @@ class User {
   late final Position? position;
 
   User({
-    this.id,
+    this.userId,
     this.name,
     this.email,
     this.password,
@@ -19,7 +19,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] as String?,
+      userId: json['id'] as String?,
       name: json['name'] as String?,
       email: json['email'] as String?,
       password: json['password'] as String?,
@@ -30,7 +30,7 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': userId,
       'name': name,
       'email': email,
       'password': password,

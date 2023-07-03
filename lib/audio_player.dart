@@ -122,7 +122,7 @@ class AudioPlayerState extends State<AudioPlayer> {
               animate: false,
               child: GestureDetector(
                 onTap: () {
-                  servicesManager.uploadAudio('hdfbfbfn');
+                  servicesManager.uploadAudio();
                 },
                 child: Material(
                   shape: CircleBorder(),

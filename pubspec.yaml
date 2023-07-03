@@ -42,9 +42,11 @@ dependencies:
   http: ^1.1.0
   provider: ^6.0.4
   flutter_launcher_icons: ^0.13.1
-  acr_cloud_sdk: ^2.0.2
+  # acr_cloud_sdk: ^2.0.2
   dio: ^5.2.1+1
   avatar_glow: ^2.0.2
+  http_parser: ^4.0.2
+  
  
 
 dev_dependencies:

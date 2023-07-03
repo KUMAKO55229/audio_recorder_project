@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:audio_recorder_project/audio_player.dart';
 import 'package:audio_recorder_project/managers/services_manager/services_manager.dart';
-import 'package:audio_recorder_project/screens/recorder_page.dart';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +43,9 @@ class _AudioRecorderState extends State<AudioRecorder>
 
   @override
   void initState() {
-    _isRecording = false;
     super.initState();
+    _isRecording = false;
+
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2),
@@ -67,10 +68,13 @@ class _AudioRecorderState extends State<AudioRecorder>
 
   @override
   void dispose() {
+    // final servicesManager =
+    //     Provider.of<ServicesManager>(context, listen: false);
     _timer?.cancel();
     _ampTimer?.cancel();
     _audioRecorder.dispose();
     _animationController.dispose();
+
     super.dispose();
   }
 
@@ -123,21 +127,21 @@ class _AudioRecorderState extends State<AudioRecorder>
                 SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    _buildRecordStopControl(),
-                    const SizedBox(width: 20),
-                    _buildPauseResumeControl(),
-                    const SizedBox(width: 20),
-                    _buildText(),
-                  ],
-                ),
-                if (_amplitude != null) ...<Widget>[
-                  const SizedBox(height: 40),
-                  Text('Current: ${_amplitude?.current ?? 0.0}'),
-                  Text('Max: ${_amplitude?.max ?? 0.0}'),
-                ],
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: <Widget>[
+                //     _buildRecordStopControl(),
+                //     const SizedBox(width: 20),
+                //     _buildPauseResumeControl(),
+                //     const SizedBox(width: 20),
+                //     _buildText(),
+                //   ],
+                // ),
+                // if (_amplitude != null) ...<Widget>[
+                //   const SizedBox(height: 40),
+                //   Text('Current: ${_amplitude?.current ?? 0.0}'),
+                //   Text('Max: ${_amplitude?.max ?? 0.0}'),
+                // ],
               ],
             )),
       );
@@ -168,6 +172,41 @@ class _AudioRecorderState extends State<AudioRecorder>
     //   ),
     // ),
     //  / );
+
+    // _isRecording
+    //                   ? AnimatedBuilder(
+    //                       animation: _scaleAnimation,
+    //                       builder: (BuildContext context, Widget? child) {
+    //                         return Transform.scale(
+    //                           scale: _scaleAnimation.value,
+    //                           child: child,
+    //                         );
+    //                       },
+    //                       child: AvatarGlow(
+    //                         endRadius: 200.0,
+    //                         // animate: _isRecording,
+    //                         child: GestureDetector(
+    //                           onTap: () => _isRecording ? null : _start(),
+    //                           child: Material(
+    //                             shape: CircleBorder(),
+    //                             elevation: 8,
+    //                             child: Container(
+    //                               padding: EdgeInsets.all(40),
+    //                               height: 200,
+    //                               width: 200,
+    //                               decoration: BoxDecoration(
+    //                                   shape: BoxShape.circle,
+    //                                   color: Color(0xFF089af8)),
+    //                               child: Image.asset(
+    //                                 'assets/images/shazam-logo.png',
+    //                                 color: Colors.white,
+    //                               ),
+    //                             ),
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     )
+    //                   :
   }
 
   Widget _buildRecordStopControl() {
@@ -255,6 +294,8 @@ class _AudioRecorderState extends State<AudioRecorder>
   }
 
   Future<void> _start() async {
+    final servicesManager =
+        Provider.of<ServicesManager>(context, listen: false);
     try {
       if (await _audioRecorder.hasPermission()) {
         await _audioRecorder.start();
@@ -266,7 +307,8 @@ class _AudioRecorderState extends State<AudioRecorder>
         });
 
         _startTimer();
-        await Future.delayed(Duration(seconds: 15));
+        await Future.delayed(
+            Duration(seconds: servicesManager.newRecordDuration));
         _stop();
       }
     } catch (e) {
@@ -277,10 +319,14 @@ class _AudioRecorderState extends State<AudioRecorder>
   }
 
   Future<void> _stop() async {
+    final servicesManager =
+        Provider.of<ServicesManager>(context, listen: false);
     _timer?.cancel();
     _ampTimer?.cancel();
     final String? path = await _audioRecorder.stop();
     // audioPah = path;
+
+    servicesManager.audioPah = path!;
     widget.onStop(path!);
 
     setState(() => _isRecording = false);
