@@ -1,6 +1,6 @@
 // import 'package:acr_cloud_sdk/acr_cloud_sdk.dart';
 import 'package:audio_recorder_project/models/deezer_song_model.dart';
-import 'package:audio_recorder_project/models/simplifieldUri.dart';
+import 'package:audio_recorder_project/models/music.dart';
 import 'package:audio_recorder_project/models/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -16,41 +16,18 @@ import 'package:http/io_client.dart';
 class ServicesManager extends ChangeNotifier {
   Dio? _dio;
   late String audioPah;
-  // late User? user;
+
   late Position myPosition;
   late int newRecordDuration;
-  // final AcrCloudSdk acr = AcrCloudSdk();
-  // final songService = SongService();
+
   DeezerSongModel? currentSong;
   bool isRecognizing = false;
   bool success = false;
-
+  bool isNewUpload = false;
+  Music? music;
   ServicesManager() {
     determinePosition();
-    // user = User();
-    // user = User(
-    //   userId: "israel",
-    // );
-
-    // initAcr();
-
-//
   }
-
-  /// Determine the current position of the device.
-
-  // late User? user = User(
-  //     userId: "israel",
-  //     position: Position(
-  //       longitude: -7.778,
-  //       latitude: 53.273,
-  //       timestamp: DateTime.now(),
-  //       accuracy: 0,
-  //       altitude: 0,
-  //       heading: 0,
-  //       speed: 0,
-  //       speedAccuracy: 0,
-  //     ));
 
   Future<void> determinePosition({User? newUser}) async {
     bool serviceEnabled;
@@ -93,25 +70,8 @@ class ServicesManager extends ChangeNotifier {
         desiredAccuracy: LocationAccuracy.high);
     myPosition = position;
     print('MYPOSITION ${myPosition}');
-    ping();
+
     notifyListeners();
-    // if (user != null) {
-    //   user!.position = position;
-    //   print('user.position  | position != null ${user!.position}');
-
-    //   ping();
-    //   notifyListeners();
-    // }
-    // if (position != null && user != null) {
-    //   user!.position = position;
-    //   print('user.position  | position != null ${user!.position}');
-
-    //   ping();
-    //   notifyListeners();
-    //   // return await Geolocator.getCurrentPosition(
-    //   //     desiredAccuracy: LocationAccuracy.high);
-    // }
-    // print('position= null ${position}');
   }
 
   var httpClient = http.IOClient(
@@ -119,7 +79,7 @@ class ServicesManager extends ChangeNotifier {
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true,
   );
-  Future<void> ping() async {
+  Future<bool> ping() async {
     var request =
         http.Request('GET', Uri.parse('https://187.94.99.126:9948/api/ping'))
           ..headers.addAll({
@@ -150,13 +110,22 @@ class ServicesManager extends ChangeNotifier {
 
         Map<String, dynamic> json = jsonDecode(responseString);
         newRecordDuration = json['seconds'];
+        bool canRecord = json['check'];
         notifyListeners();
         print('Valor dos segundos: $newRecordDuration');
+        if (canRecord) {
+          return true;
+        } else {
+          return false;
+        }
+        // return false;
       } else {
-        throw Exception('Erro durante a requisição: ${response.statusCode}');
+        return false;
+        // throw Exception('Erro durante a requisição: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Erro durante a requisição: $e');
+      return false;
+      // throw Exception('Erro durante a requisição: $e');
     }
   }
 
@@ -191,15 +160,21 @@ class ServicesManager extends ChangeNotifier {
     );
 
     try {
-      // http.Response response =
-      //     await http.Response.fromStream(await request.send());
-
       http.Response response =
           await http.Response.fromStream(await httpClient.send(request));
 
       if (response.statusCode == 200) {
         print("RESPONSE");
         print(response.body);
+        Map<String, dynamic> jsonData = json.decode(response.body);
+        Music newMusic = Music.fromJson(jsonData);
+
+        if (music == null || newMusic != null) {
+          music = newMusic;
+          isNewUpload = true;
+        } else {
+          isNewUpload = false;
+        }
 
         notifyListeners();
       } else {
@@ -210,143 +185,9 @@ class ServicesManager extends ChangeNotifier {
     }
   }
 
-  // Future<void> uploadAudio() async {
-  //   var httpClient = http.IOClient(
-  //     HttpClient()
-  //       ..badCertificateCallback =
-  //           (X509Certificate cert, String host, int port) => true,
-  //   );
-
-  //   var url = Uri.parse('https://187.94.99.126:9948/api/check');
-  //   var headers = {
-  //     HttpHeaders.contentTypeHeader: 'application/json',
-  //   };
-
-  //   var audioBytes = await File(audioPah).readAsBytes();
-  //   var base64Audio = base64Encode(audioBytes);
-
-  //   var params = {
-  //     "userId": "israel",
-  //     "latitude": myPosition.latitude,
-  //     "longitude": myPosition.longitude,
-  //     "audio": base64Audio,
-  //   };
-
-  //   var body = jsonEncode(params);
-
-  //   try {
-  //     http.Response response =
-  //         await httpClient.post(url, headers: headers, body: body);
-
-  //     if (response.statusCode == 200) {
-  //       print("RESPONSE uploadAudio");
-  //       print(response.body);
-
-  //       // Processar a resposta JSON, se necessário
-  //       var jsonResponse = jsonDecode(response.body);
-  //       print("jsonResponse ${jsonResponse}");
-  //       // ...
-  //     } else {
-  //       throw Exception('Erro durante a requisição: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Erro durante a requisição: $e');
-  //   }
-  // }
-
-  // Future<void> uploadAudio(String path) async {
-  //   final url =
-  //       'https://187.94.99.126:9948/api/check'; // Substitua pelo URL do serviço de upload
-  //   final file = File(path);
-
-  //   try {
-  //     final request = http.MultipartRequest('POST', Uri.parse(url));
-  //     request.files.add(await http.MultipartFile.fromPath('audio', file.path));
-
-  //     final response = await request.send();
-
-  //     if (response.statusCode == 200) {
-  //       print('Upload de áudio concluído com sucesso.');
-  //     } else {
-  //       print(
-  //           'Falha no upload de áudio. Código de status: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     print('Erro durante o upload de áudio: $e');
-  //   }
-  // }
-
-// -----------------------------------------------------------
-  // SongService() {
-  //   BaseOptions options = BaseOptions(
-  //       receiveTimeout: Duration(milliseconds: 100000),
-  //       connectTimeout: Duration(milliseconds: 100000),
-  //       baseUrl: 'https://api.deezer.com/track/');
-  //   _dio = Dio(options);
-  // }
-
-  // Future<DeezerSongModel> getTrack(id) async {
-  //   final response = await _dio!.get('$id',
-  //       options: Options(headers: {
-  //         'Content-type': 'application/json;charset=UTF-8',
-  //         'Accept': 'application/json;charset=UTF-8',
-  //       }));
-  //   DeezerSongModel result = DeezerSongModel.fromJson(response.data);
-  //   return result;
-  // }
-
-  // Future<void> initAcr() async {
-  //   try {
-  //     acr
-  //       ..init(
-  //         host: 'identify-eu-west-1.acrcloud.com', // https://www.acrcloud.com/
-  //         accessKey: '7c4806d231525515bce0b7b70f38e63b',
-  //         accessSecret: 'DNeXRGNWjy6Cp0xcjwHgJ5ygSFHwzo0QGihknsvs',
-  //         setLog: true,
-  //       )
-  //       ..songModelStream.listen(searchSong);
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
-
-  // void searchSong(SongModel song) async {
-  //   print(song);
-  //   final metaData = song?.metadata;
-  //   if (metaData != null && metaData.music!.length > 0) {
-  //     final trackId = metaData!.music![0]?.externalMetadata?.deezer?.track?.id;
-  //     try {
-  //       final res = await getTrack(trackId);
-  //       currentSong = res;
-  //       success = true;
-  //       notifyListeners();
-  //     } catch (e) {
-  //       isRecognizing = false;
-  //       success = false;
-  //       notifyListeners();
-  //     }
-  //   }
-  // }
-
-  // Future<void> startRecognizing() async {
-  //   isRecognizing = true;
-  //   success = false;
-  //   notifyListeners();
-  //   try {
-  //     await acr.start();
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
-
-  // Future<void> stopRecognizing() async {
-  //   isRecognizing = false;
-  //   success = false;
-  //   notifyListeners();
-  //   try {
-  //     await acr.stop();
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
+  void deleteMusic({Music? music}) {
+    music = null;
+    isNewUpload = false;
+    notifyListeners();
+  }
 }

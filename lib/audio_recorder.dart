@@ -44,6 +44,7 @@ class _AudioRecorderState extends State<AudioRecorder>
   @override
   void initState() {
     super.initState();
+
     _isRecording = false;
 
     _animationController = AnimationController(
@@ -117,31 +118,13 @@ class _AudioRecorderState extends State<AudioRecorder>
                         decoration: BoxDecoration(
                             shape: BoxShape.circle, color: Color(0xFF089af8)),
                         child: Image.asset(
-                          'assets/images/shazam-logo.png',
+                          'assets/images/mic.png',
                           color: Colors.white,
                         ),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: <Widget>[
-                //     _buildRecordStopControl(),
-                //     const SizedBox(width: 20),
-                //     _buildPauseResumeControl(),
-                //     const SizedBox(width: 20),
-                //     _buildText(),
-                //   ],
-                // ),
-                // if (_amplitude != null) ...<Widget>[
-                //   const SizedBox(height: 40),
-                //   Text('Current: ${_amplitude?.current ?? 0.0}'),
-                //   Text('Max: ${_amplitude?.max ?? 0.0}'),
-                // ],
               ],
             )),
       );
@@ -294,10 +277,20 @@ class _AudioRecorderState extends State<AudioRecorder>
   }
 
   Future<void> _start() async {
+    const snackBar = SnackBar(
+      content: Text('Você não tem permissão para gravar audio deste local',
+          style: TextStyle(color: Colors.white, fontSize: 18),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 3),
+      duration: Duration(seconds: 4),
+      backgroundColor: Colors.red,
+    );
     final servicesManager =
         Provider.of<ServicesManager>(context, listen: false);
+
     try {
-      if (await _audioRecorder.hasPermission()) {
+      if (await _audioRecorder.hasPermission() &&
+          await servicesManager.ping()) {
         await _audioRecorder.start();
 
         bool isRecording = await _audioRecorder.isRecording();
@@ -310,6 +303,8 @@ class _AudioRecorderState extends State<AudioRecorder>
         await Future.delayed(
             Duration(seconds: servicesManager.newRecordDuration));
         _stop();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
       if (kDebugMode) {

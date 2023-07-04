@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audio_recorder_project/managers/services_manager/services_manager.dart';
+import 'package:audio_recorder_project/screens/components/my_card.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,11 @@ class AudioPlayerState extends State<AudioPlayer> {
 
   @override
   void initState() {
+    super.initState();
+    final servicesManager =
+        Provider.of<ServicesManager>(context, listen: false);
+    servicesManager.deleteMusic();
+
     _playerStateChangedSubscription =
         _audioPlayer.playerStateStream.listen((ap.PlayerState state) async {
       if (state.processingState == ap.ProcessingState.completed) {
@@ -54,8 +60,6 @@ class AudioPlayerState extends State<AudioPlayer> {
     _durationChangedSubscription = _audioPlayer.durationStream
         .listen((Duration? duration) => setState(() {}));
     _init();
-
-    super.initState();
   }
 
   Future<void> _init() async {
@@ -68,6 +72,7 @@ class AudioPlayerState extends State<AudioPlayer> {
     _positionChangedSubscription.cancel();
     _durationChangedSubscription.cancel();
     _audioPlayer.dispose();
+
     super.dispose();
   }
 
@@ -97,6 +102,8 @@ class AudioPlayerState extends State<AudioPlayer> {
                     onPressed: () {
                       // ignore: always_specify_types
                       _audioPlayer.stop().then((value) => widget.onDelete());
+
+                      // _audioPlayer.dispose();
                     },
                   ),
                   // IconButton(
@@ -151,6 +158,12 @@ class AudioPlayerState extends State<AudioPlayer> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 15,
+            ),
+            (servicesManager.isNewUpload && servicesManager.music != null)
+                ? MyCard(music: servicesManager.music!)
+                : Container()
           ],
         ),
       );
@@ -198,7 +211,7 @@ class AudioPlayerState extends State<AudioPlayer> {
       canSetValue &= position.inMilliseconds < duration.inMilliseconds;
     }
 
-    double width = constraints.width - _controlSize - _deleteBtnSize;
+    double width = constraints.width - _controlSize - _deleteBtnSize - 30;
     width -= _deleteBtnSize;
 
     return SizedBox(

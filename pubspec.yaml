@@ -73,8 +73,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/sound-icon.jpg
-    - assets/images/shazam-logo.png
+    - assets/images/mic.png
+    - assets/images/microphone-logo.png
 # assets: 
       # -images/
   #   - images/a_dot_burr.jpeg
