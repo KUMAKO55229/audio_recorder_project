@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:audio_recorder_project/managers/services_manager/services_manager.dart';
 import 'package:audio_recorder_project/screens/components/my_card.dart';
 import 'package:avatar_glow/avatar_glow.dart';
@@ -81,14 +80,14 @@ class AudioPlayerState extends State<AudioPlayer> {
     return Consumer<ServicesManager>(builder: (_, servicesManager, __) {
       return Scaffold(
         backgroundColor: Color(0xFF042442),
-        body: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        body: ListView(
           children: [
             Container(
-              // margin: EdgeInsets.only(top: 200.0),
+              margin: EdgeInsets.only(
+                top: 50.0,
+              ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   _buildControl(),
@@ -120,9 +119,6 @@ class AudioPlayerState extends State<AudioPlayer> {
                   // )
                 ],
               ),
-            ),
-            SizedBox(
-              height: 15,
             ),
             AvatarGlow(
               endRadius: 200.0,

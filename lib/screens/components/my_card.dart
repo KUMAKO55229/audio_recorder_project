@@ -9,6 +9,7 @@ class MyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.all(16),
       color: Color(0xFF089af8),
       child: Padding(
         padding: const EdgeInsets.all(8.0),

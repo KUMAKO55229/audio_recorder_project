@@ -129,67 +129,6 @@ class _AudioRecorderState extends State<AudioRecorder>
             )),
       );
     });
-    // return MaterialApp(
-    // home: ,
-    // home: ShazamAnimationScreen(),
-    // home: Scaffold(
-    //   body: Column(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     children: <Widget>[
-    //       Row(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: <Widget>[
-    //           _buildRecordStopControl(),
-    //           const SizedBox(width: 20),
-    //           _buildPauseResumeControl(),
-    //           const SizedBox(width: 20),
-    //           _buildText(),
-    //         ],
-    //       ),
-    //       if (_amplitude != null) ...<Widget>[
-    //         const SizedBox(height: 40),
-    //         Text('Current: ${_amplitude?.current ?? 0.0}'),
-    //         Text('Max: ${_amplitude?.max ?? 0.0}'),
-    //       ],
-    //     ],
-    //   ),
-    // ),
-    //  / );
-
-    // _isRecording
-    //                   ? AnimatedBuilder(
-    //                       animation: _scaleAnimation,
-    //                       builder: (BuildContext context, Widget? child) {
-    //                         return Transform.scale(
-    //                           scale: _scaleAnimation.value,
-    //                           child: child,
-    //                         );
-    //                       },
-    //                       child: AvatarGlow(
-    //                         endRadius: 200.0,
-    //                         // animate: _isRecording,
-    //                         child: GestureDetector(
-    //                           onTap: () => _isRecording ? null : _start(),
-    //                           child: Material(
-    //                             shape: CircleBorder(),
-    //                             elevation: 8,
-    //                             child: Container(
-    //                               padding: EdgeInsets.all(40),
-    //                               height: 200,
-    //                               width: 200,
-    //                               decoration: BoxDecoration(
-    //                                   shape: BoxShape.circle,
-    //                                   color: Color(0xFF089af8)),
-    //                               child: Image.asset(
-    //                                 'assets/images/shazam-logo.png',
-    //                                 color: Colors.white,
-    //                               ),
-    //                             ),
-    //                           ),
-    //                         ),
-    //                       ),
-    //                     )
-    //                   :
   }
 
   Widget _buildRecordStopControl() {
