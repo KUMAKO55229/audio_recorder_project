@@ -1,7 +1,7 @@
 // import 'package:acr_cloud_sdk/acr_cloud_sdk.dart';
-import 'package:audio_recorder_project/models/deezer_song_model.dart';
-import 'package:audio_recorder_project/models/music.dart';
-import 'package:audio_recorder_project/models/user.dart';
+import 'package:ecade_mvp/models/deezer_song_model.dart';
+import 'package:ecade_mvp/models/music.dart';
+import 'package:ecade_mvp/models/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -129,7 +129,7 @@ class ServicesManager extends ChangeNotifier {
     }
   }
 
-  Future<void> uploadAudio() async {
+  Future<String?> uploadAudio() async {
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('https://187.94.99.126:9948/api/check'),
@@ -177,11 +177,12 @@ class ServicesManager extends ChangeNotifier {
         }
 
         notifyListeners();
+        return null;
       } else {
-        throw Exception('Erro durante a requisição: ${response.statusCode}');
+        return 'Erro durante a requisição: ${response.statusCode}';
       }
     } catch (e) {
-      throw Exception('Erro durante a requisição: $e');
+      return 'Erro durante a requisição: $e';
     }
   }
 

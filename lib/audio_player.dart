@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:audio_recorder_project/managers/services_manager/services_manager.dart';
-import 'package:audio_recorder_project/screens/components/my_card.dart';
+import 'package:dio/dio.dart';
+import 'package:ecade_mvp/managers/services_manager/services_manager.dart';
+import 'package:ecade_mvp/screens/components/my_card.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -124,8 +125,19 @@ class AudioPlayerState extends State<AudioPlayer> {
               endRadius: 200.0,
               animate: false,
               child: GestureDetector(
-                onTap: () {
-                  servicesManager.uploadAudio();
+                onTap: () async {
+                  final response = await servicesManager.uploadAudio();
+                  if (response != null) {
+                    final snackBar = SnackBar(
+                      content: Text('Erro durante a o upload! Grave novamente!',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3),
+                      duration: Duration(seconds: 4),
+                      backgroundColor: Colors.red,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
                 },
                 child: Material(
                   shape: CircleBorder(),

@@ -1,4 +1,4 @@
-import 'package:audio_recorder_project/models/music.dart';
+import 'package:ecade_mvp/models/music.dart';
 import 'package:flutter/material.dart';
 
 class MyCard extends StatelessWidget {

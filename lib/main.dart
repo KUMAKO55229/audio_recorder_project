@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:audio_recorder_project/screens/home_page.dart';
-import 'package:audio_recorder_project/managers/services_manager/services_manager.dart';
+import 'package:ecade_mvp/screens/home_page.dart';
+import 'package:ecade_mvp/managers/services_manager/services_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

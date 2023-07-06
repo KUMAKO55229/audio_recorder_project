@@ -1,13 +1,13 @@
-import 'package:audio_recorder_project/models/position.dart';
-import 'package:audio_recorder_project/models/user.dart';
-import 'package:audio_recorder_project/managers/services_manager/services_manager.dart';
+import 'package:ecade_mvp/models/position.dart';
+import 'package:ecade_mvp/models/user.dart';
+import 'package:ecade_mvp/managers/services_manager/services_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:audio_recorder_project/audio_recorder.dart';
-import 'package:audio_recorder_project/screens/home_page.dart';
+import 'package:ecade_mvp/audio_recorder.dart';
+import 'package:ecade_mvp/screens/home_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart' as ap;
-import 'package:audio_recorder_project/audio_player.dart';
+import 'package:ecade_mvp/audio_player.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
