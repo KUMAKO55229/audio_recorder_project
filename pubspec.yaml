@@ -75,6 +75,7 @@ flutter:
   assets:
     - assets/images/mic.png
     - assets/images/microphone-logo.png
+    - assets/images/images-5.jpeg
 # assets: 
       # -images/
   #   - images/a_dot_burr.jpeg

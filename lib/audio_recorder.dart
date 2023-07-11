@@ -119,7 +119,7 @@ class _AudioRecorderState extends State<AudioRecorder>
                             shape: BoxShape.circle, color: Color(0xFF089af8)),
                         child: Image.asset(
                           'assets/images/mic.png',
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                     ),

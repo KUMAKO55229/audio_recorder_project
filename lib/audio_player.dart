@@ -85,7 +85,7 @@ class AudioPlayerState extends State<AudioPlayer> {
           children: [
             Container(
               margin: EdgeInsets.only(
-                top: 50.0,
+                top: 100.0,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -171,7 +171,7 @@ class AudioPlayerState extends State<AudioPlayer> {
             ),
             (servicesManager.isNewUpload && servicesManager.music != null)
                 ? MyCard(music: servicesManager.music!)
-                : Container()
+                : SizedBox.shrink()
           ],
         ),
       );
